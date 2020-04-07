@@ -1,9 +1,7 @@
 import os
 
 WorkingDir = os.getcwd()
-WatchedFolder = f'{WorkingDir}/Watched Folder - Demo'
-print(WatchedFolder)
-DirectoryPath = True
+WatchedFolder = rf'{WorkingDir}\Demo Watched Folder'
 
 
 def ListToCommas(List):
@@ -18,7 +16,7 @@ def ListToCommas(List):
         return CommaSep
 
 
-def FolderCheck(DirNames):  # Checks Folder total and sets proper version of the word folder.
+def FolderCountCheck(DirNames):  # Checks Folder total and sets proper version of the word folder.
     if len(DirNames) == 1:
         FolderPlural = 'folder'
     else:
@@ -26,19 +24,28 @@ def FolderCheck(DirNames):  # Checks Folder total and sets proper version of the
     return FolderPlural
 
 
-def FirstRunCheck(DirPath, DirNames):
-    if DirectoryPath:
-        print(f'The watched directory is located in {DirPath}.')
-    elif len(DirNames) > 0:
-        print(f'The directory contains {len(Folders)} {FolderCheck(Folders)} named {ListToCommas(Folders)}.')
-        print(f'The {FolderCheck(DirNames)} {ListToCommas(DirNames)}')
-
+DirectoryPath = True
 
 # Uses os.walk to check each directory, folder and file in a watched folder.
 for Directory, Folders, Files in os.walk(WatchedFolder):
-    FirstRunCheck(Directory, Folders)
+    if DirectoryPath:
+        print(f'The watched directory is located in {Directory}.')
+    DirectoryPath = False
+
+# Folder Check
+
     if len(Folders) == 0:
         pass
     else:
-        print(f'The {FolderCheck(Folders)} contains {ListToCommas(Files)}.\n')
-    DirectoryPath = False
+        print(f'The {FolderCountCheck(Folders)} contained in {os.path.basename(WatchedFolder)} are {ListToCommas(Folders)}.')
+
+# Files Check
+    if len(Files) == 0:
+        pass
+    else:
+        print(f'The {FolderCountCheck(Folders)} contained are {ListToCommas(Files)}.')
+
+# todo add voice readout of directory info.
+
+print(os.path.dirname(WatchedFolder))
+print(os.path.basename(WatchedFolder))
